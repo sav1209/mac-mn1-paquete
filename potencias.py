@@ -33,7 +33,7 @@ def lectura_datos():
     return n, matriz, vi, max_iter, tolerancia
 
 
-# Aplica el método de potencias con una matriz A de n*n y vector columna inicial x
+# Aplica el método de potencias con una matriz A de n*n y vector inicial x
 def metodo_potencias(A, x, tolerancia, max_iter):
     # Inicialización
     lambda_anterior = 0
@@ -84,7 +84,7 @@ def metodo_potencias(A, x, tolerancia, max_iter):
     return lambda_actual, x
 
 
-# Aplica el método de potencias inverso con una matriz A y vector columna inicial x
+# Aplica el método de potencias inverso con una matriz A y vector inicial x
 def metodo_potencias_inverso(A, x, tolerancia, max_iter):
     # Inicialización
     lambda_anterior = 1
@@ -111,15 +111,17 @@ def metodo_potencias_inverso(A, x, tolerancia, max_iter):
         print("\u25CF Iteración", iteracion)
         print(f"\u27A4 \u03BB^({iteracion}) = {1 / lambda_actual}") # \u03BB = λ, caracter lambda en Unicode
         print("\u27A4 Error = ", error)
-        print(f"\u27A4 x^({iteracion}) = {np.transpose(x)}\n")
+        print(f"\u27A4 x^({iteracion}) =")
+        print(x, end="\n\n")
 
         # Verificar criterio de parada
         if error < tolerancia:
             print("\n\t\u25A0 SOLUCIÓN \u25A0")
             print(f"\u25B7 Convergencia alcanzada en {iteracion} iteraciones.")
             print(f"\u25B7 Valor propio dominante: {1 / lambda_actual}")
-            print(f"\u25B7 Vector propio asociado: {np.transpose(x)}")
-            return 1 / lambda_actual, np.transpose(x) # Salir del programa al converger
+            print(f"\u25B7 Vector propio asociado:")
+            print(x)
+            return 1 / lambda_actual, x # Salir del programa al converger
 
         # Actualizar para la siguiente iteración
         lambda_anterior = lambda_actual
@@ -128,8 +130,9 @@ def metodo_potencias_inverso(A, x, tolerancia, max_iter):
     print("\n\t\u25A0 SOLUCIÓN \u25A0")
     print(f"\u25B7 El método no convergió en {max_iter} iteraciones.")
     print(f"\u25B7 Último valor aproximado del valor propio dominante: {1 / lambda_actual}")
-    print(f"\u25B7 Último vector propio asociado: {np.transpose(x)}")
-    return 1 / lambda_actual, np.transpose(x)
+    print(f"\u25B7 Último vector propio asociado:")
+    print(x)
+    return 1 / lambda_actual, x
 
 
 # Aplica ambos métodos a una matriz A con vector inicial x
@@ -150,16 +153,22 @@ def potencias_y_potencias_inverso(A, x, tolerancia, max_iter):
     print("\n")
 
     imprime_titulo_4("Valor y vector propio mínimo")
-    valor_propio_min, vector_propio_min = metodo_potencias_inverso(np.linalg.inv(A), x, tolerancia, max_iter)
-
-    print("\n")
+    try:
+        invA = np.linalg.inv(A)
+        valor_propio_min, vector_propio_min = metodo_potencias_inverso(invA, x, tolerancia, max_iter)
+        print("\n")
+    except np.linalg.LinAlgError:
+        print("La matriz ingresada es singular, por lo que no tienen inversa y no se puede aplicar el método de potencias inverso.")
+        print("Pero en este caso el valor propio 0 y el vector asociado es cualquier x tal que al multiplicarlo por la matriz de la matriz 0.\n")
+        valor_propio_min, vector_propio_min = 0, "No se pudo determinar"
 
     imprime_titulo_4("Resumen")
     print(f"\u25B7 Valor propio máximo: {valor_propio_max}")
-    print("\u25B7 Vector columna asociado:")
+    print("\u25B7 Vector asociado:")
     print(vector_propio_max)
 
     print(f"\n\u25B7 Valor propio mínimo: {valor_propio_min}")
-    print(f"\u25B7 Vector renglón asociado: {vector_propio_min}")
+    print(f"\u25B7 Vector asociado:")
+    print(vector_propio_min)
 
     input("\nPresiona enter para regresar al menu principal")
