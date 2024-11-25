@@ -1,10 +1,13 @@
 import os
+# Utilice este modulo para limpiar la consola en Google Colab
+# from IPython.display import clear_output # Limpiar consola.
 
 # Limpia la terminal segun el SO que se este utilizando.
 def limpiar_terminal():
     sistema = os.name  # Detecta el sistema operativo
     if sistema == 'posix':  # Linux, macOS
         os.system('clear')
+        # clear_output(wait=True)  # Limpia la consola en Colab
     elif sistema == 'nt':  # Windows
         os.system('cls')
 
