@@ -304,7 +304,7 @@ def menu_metodos():
             else:
                 break
 
-        print(f"\nLa opción seleccionada fue: {metodos[opcion-1] if 1 <= opcion <= len(metodos) else "Regresar al menu principal"}.")
+        print(f"\nLa opción seleccionada fue: {metodos[opcion-1] if 1 <= opcion <= len(metodos) else 'Regresar al menu principal'}.")
         confirma_eleccion = input("\u25B6 ¿Está seguro de su elección? (s/n): ").strip().lower()
 
         if confirma_eleccion == "s":
@@ -323,7 +323,7 @@ def menu_funciones():
         limpiar_terminal()
         imprime_titulo_4("MENÚ DE FUNCIONES")
         for indice, funcion in enumerate(funciones):
-            print(f"{indice+1}. {funcion["asciimath"]}")
+            print(f"{indice+1}. {funcion['asciimath']}")
         print(f"{indice+2}. Regresar al menú de métodos.")
 
         while True:
@@ -333,7 +333,7 @@ def menu_funciones():
             else:
                 break
 
-        print(f"La opción seleccionada fue: {funciones[opcion-1]["asciimath"] if 1 <= opcion <= len(funciones) else "Regresar al menú de métodos."}")
+        print(f"La opción seleccionada fue: {funciones[opcion-1]['asciimath'] if 1 <= opcion <= len(funciones) else 'Regresar al menú de métodos.'}")
         confirma_eleccion = input("\u25B6 ¿Está seguro de su elección? (s/n): ").strip().lower()
 
         if confirma_eleccion == "s":
@@ -360,7 +360,7 @@ def principal():
             while True:
                 limpiar_terminal()
                 print(f"Método: {metodos[opcion_metodo - 1]}")
-                print(f"Función: {funcion["asciimath"]}")
+                print(f"Función: {funcion['asciimath']}")
 
                 print(f"\nIngrese los datos necesarios para el método y función seleccionados:")
                 if opcion_metodo == 1: # Método de Newton
