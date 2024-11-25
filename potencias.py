@@ -110,7 +110,7 @@ def metodo_potencias_inverso(A, x, tolerancia, max_iter):
         error = abs(abs(lambda_actual) - abs(lambda_anterior))
         print("\u25CF Iteración", iteracion)
         print(f"\u27A4 \u03BB^({iteracion}) = {1 / lambda_actual}") # \u03BB = λ, caracter lambda en Unicode
-        print("\u27A4 Error = ", error)
+        print("\u27A4 Error (con 1/\u03BB) = ", error)
         print(f"\u27A4 x^({iteracion}) =")
         print(x, end="\n\n")
 
