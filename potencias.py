@@ -15,12 +15,24 @@ def lectura_datos():
         limpiar_terminal()
         imprime_titulo_3("OBTENCION DE VALORES PROPIOS - LECTURA DE DATOS")
         vi = lim.leer_vector(n)  # Vector columna inicial
-        norma = max(abs(vi))
+        norma = np.max(np.abs(vi))
         if norma == 1:
             break
         else:
-            print("La norma espectral del vector inicial debe ser 1. Vuelva a ingresar.")
-            input("\nPresione enter para continuar.")
+            print(f"La norma espectral del vector inicial debe ser 1 y para el vector ingresado es {norma}. ¿Qué desea hacer?")
+            print("\ta) Normalizar.")
+            print("\tb) Ingresar un nuevo vector.")
+            opcion = input("Opción: ").strip().lower()
+            if opcion == "a":
+                valores_norma_maxima = vi[np.abs(vi) == norma]
+                vi /= np.max(valores_norma_maxima) # Selecciona el valor con la norma maxima positiva si existe
+
+                print("\nEl vector ingresado se ha normalizado y ahora es:")
+                print(vi)
+                input("Presione enter para continuar.")
+                break
+            else:
+                input("\nPresione enter para ingresar el nuevo vector.")
 
     limpiar_terminal()
     imprime_titulo_3("OBTENCION DE VALORES PROPIOS - LECTURA DE DATOS")

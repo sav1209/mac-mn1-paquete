@@ -45,7 +45,12 @@ def iteracion_newton(func, x0, max_iter, tol):
     error = 100
     fx0 = 0
     fpx0 = 0
-    print("i\t\tx_k\t\tf(x_k)\t\tf'(x_k)\t\tE_r")
+
+    # Lista para almacenar la tabla del proceso.
+    tabla = []
+    # Declara un encabezado para la tabla.
+    encabezado = ["k", "x_k", "f(x_k)", "f'(x_k)", "E_r"]
+
     while (iter < max_iter and error > tol):
         iter += 1
         fx0 = funcion(x0)
@@ -54,12 +59,22 @@ def iteracion_newton(func, x0, max_iter, tol):
         if x1 == "err":
             print("Se detuvo la iteración, hay una indeterminación con los valores obtenidos")
             return
-        error = abs(x1 - x0) / abs(x1)
-        print(f"{iter}\t{x0:.6f}\t{fx0:.6f}\t{fpx0:.6f}\t{error:.6f}")
+
+        if x1 !=0 :
+            error = abs(x1 - x0) / abs(x1)
+        else:
+            error = "ERROR"
+            break
+
+        tabla.append([iter, x0, fx0, fpx0, error])
         x0 = x1
-    if error > tol:
-        print("No se alcanzó la tolerancia")
-    print(f"Raíz encontrada: {x0} en la iteración {iter + 1}")
+
+    # Imprime la tabla
+    print(tabulate(tabla, headers=encabezado, tablefmt="fancy_grid", floatfmt=".10f"))
+
+    if error == "ERROR" or error > tol:
+        print("\nNo se alcanzó la tolerancia")
+    print(f"\nRaíz encontrada: {x0} en la iteración {iter + 1}")
 
 
 def metodo_secante(f, valores_iniciales, tol, tipo_error, max_iteraciones):
