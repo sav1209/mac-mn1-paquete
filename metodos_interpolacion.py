@@ -57,7 +57,8 @@ def iteracion_newton(func, x0, max_iter, tol):
         fpx0 = derivada(x0)
         x1 = newton(x0, fx0, fpx0)
         if x1 == "err":
-            print("Se detuvo la iteración, hay una indeterminación con los valores obtenidos")
+            print("\nSe detuvo la iteración, hay una indeterminación con los valores obtenidos")
+            input("Presione enter para continuar.")
             return
 
         if x1 !=0 :
@@ -73,8 +74,8 @@ def iteracion_newton(func, x0, max_iter, tol):
     print(tabulate(tabla, headers=encabezado, tablefmt="fancy_grid", floatfmt=".10f"))
 
     if error == "ERROR" or error > tol:
-        print("\nNo se alcanzó la tolerancia")
-    print(f"\nRaíz encontrada: {x0} en la iteración {iter + 1}")
+        print("\n\u29BF No se alcanzó la tolerancia")
+    print(f"\n\u29BF Raíz encontrada: {x0} en la iteración {tabla[-1][0]}")
 
 
 def metodo_secante(f, valores_iniciales, tol, tipo_error, max_iteraciones):
@@ -107,10 +108,10 @@ def metodo_secante(f, valores_iniciales, tol, tipo_error, max_iteraciones):
 
     # Verifica que si la solución es alguno de los extremos
     if fx0 == 0:
-        print(f"{x0} es una raíz de la función.")
+        print(f"\u29BF {x0} es una raíz de la función.")
         return
     if fx1 == 0:
-        print(f"{x1} es una raíz de la función.")
+        print(f"\u29BF {x1} es una raíz de la función.")
         return
 
     # Lista para almacenar la tabla del proceso.
@@ -127,19 +128,20 @@ def metodo_secante(f, valores_iniciales, tol, tipo_error, max_iteraciones):
         x = x1 - fx1 * (x0 - x1) / (fx0 - fx1)
         fx = f(x)
     except ZeroDivisionError:
-        print("ERROR: División por cero detectada. Revisa los valores ingresados.")
+        print("\nERROR: División por cero detectada. Revisa los valores ingresados.\n")
+        return
+
+    if x1 == 0:
+        print("\nNo se puede calcular el error con el valor de x_1 ingresado pues se genera una division por cero.")
+        input("Presione enter para continuar.")
         return
 
     # Calculo de las medidas del error.
     ## Error absoluto
     errores.append(abs(x1 - x0))
     ## Error relativo y porcentual
-    if x1 != 0:
-        errores.append(errores[-1]/abs(x1))
-        errores.append(errores[-1] * 100)
-    else:
-        errores.append("ERROR")
-        errores.append("ERROR")
+    errores.append(errores[-1]/abs(x1))
+    errores.append(errores[-1] * 100)
 
     tabla.append([1, x0, x1, fx0, fx1, x, fx, errores[0], errores[1], errores[2]])
 
@@ -153,7 +155,7 @@ def metodo_secante(f, valores_iniciales, tol, tipo_error, max_iteraciones):
             x = x1 - fx1*(x0 - x1)/(fx0 - fx1)
             fx = f(x)
         except:
-            input("ERROR: División por cero detectada. Presione enter para mostrar los resultados hasta este error.")
+            input("\nERROR: División por cero detectada. Presione enter para mostrar los resultados hasta este error.\n")
             break
 
         # Calculo de las medidas del error.
@@ -165,25 +167,26 @@ def metodo_secante(f, valores_iniciales, tol, tipo_error, max_iteraciones):
             errores.append(errores[-1]/abs(x1))
             errores.append(errores[-1] * 100)
         else:
-            errores.append("ERROR")
-            errores.append("ERROR")
+            print("\nSe genero una división por cero al calcular el error.")
+            input("Presione enter para mostrar los resultados anteriores a esto.")
+            break
 
         tabla.append([i, x0, x1, fx0, fx1, x, fx, errores[0], errores[1], errores[2]])
 
         # Comprueba si se alcanzo la condicion de paro.
-        if tipo_error != 3 and errores[tipo_error] != "ERROR" and errores[tipo_error] < tol or fx1 == 0:
+        if tipo_error != 3 and errores[tipo_error] < tol or fx1 == 0:
             break
 
     # Imprime la tabla
     print(tabulate(tabla, headers=encabezado, tablefmt="fancy_grid", floatfmt=".10f"))
 
     # Imprime resultados
-    if isinstance(errores[tipo_error], str) or (tipo_error != 3 and errores[tipo_error] >= tol):
-        print("\n¡EL METODO FALLO HASTA LA ÚLTIMA ITERACIÓN!")
-        print(f"La mejor aproximación a la raíz fue {x} con un error {tipos_errores[tipo_error]} de {errores[tipo_error]}")
+    if tipo_error != 3 and tabla[-1][7 + tipo_error] >= tol:
+        print("\n\u29BF ¡EL METODO FALLO HASTA LA ÚLTIMA ITERACIÓN!")
+        print(f"\u29BF La mejor aproximación a la raíz fue {x} con un error {tipos_errores[tipo_error]} de {tabla[-1][7 + tipo_error]}")
     else:
-        print(f"\nRaíz obtenida: {x1}")
-        print(f"La raíz se obtuvo en la iteración {i} con un error {tipos_errores[tipo_error]} de {errores[tipo_error]}")
+        print(f"\n\u29BF Raíz obtenida: {tabla[-1][2]}")
+        print(f"\u29BF La raíz se obtuvo en la iteración {tabla[-1][0]} con un error {tipos_errores[tipo_error]} de {tabla[-1][7 + tipo_error]}")
 
 
 def metodo_biseccion(f, intervalo_inicial, tol, tipo_error, max_iteraciones):
@@ -244,8 +247,8 @@ def metodo_biseccion(f, intervalo_inicial, tol, tipo_error, max_iteraciones):
     # En caso de que la solución maravillosamente se encuentre en la primer iteración.
     if fp == 0:
         print(tabulate(tabla, headers=encabezado, tablefmt="fancy_grid", floatfmt=".10f"),"\n")
-        print(f"Raíz obtenida: {p}")
-        print(f"La raíz exacta se obtuvo en la iteración 0.")
+        print(f"\u29BF Raíz obtenida: {p}")
+        print(f"\u29BF La raíz exacta se obtuvo en la iteración 0.")
         return
 
 
@@ -268,18 +271,21 @@ def metodo_biseccion(f, intervalo_inicial, tol, tipo_error, max_iteraciones):
         errores.clear()
         ## Error absoluto
         errores.append(abs(p - p_anterior))
-        ## Error relativo y porcentual
         if p != 0:
+            ## Error relativo y porcentual
             errores.append(errores[-1]/abs(p))
             errores.append(errores[-1] * 100)
         else:
-            errores.append("ERROR")
-            errores.append("ERROR")
+            print("\nSe generó una división por cero al calcular el error.")
+            input("Presione enter para mostrar los resultados previos a este error.")
+            p = p_anterior
+            i = i - 1
+            break
 
         tabla.append([i, a, b, fa, fb, p, fp, errores[0], errores[1], errores[2]])
 
         # Comprueba si se alcanzo la condicion de paro.
-        if tipo_error != 3 and errores[tipo_error] != "ERROR" and errores[tipo_error] < tol or fp == 0:
+        if tipo_error != 3 and errores[tipo_error] < tol or fp == 0:
             break
         elif fa * fp < 0:
             b = p
@@ -292,14 +298,14 @@ def metodo_biseccion(f, intervalo_inicial, tol, tipo_error, max_iteraciones):
     print(tabulate(tabla, headers=encabezado, tablefmt="fancy_grid", floatfmt=".10f"))
 
     # Imprime resultados
-    if len(errores) == 0:
-        print(f"\nLa mejor aproximación a la raíz fue {p} pero no se puede determinar el error con una sola iteracion.")
-    elif tipo_error != 3 and errores[tipo_error] >= tol:
-        print("\n¡EL MÉTODO FALLO HASTA LA ÚLTIMA ITERACIÓN!")
-        print(f"La mejor aproximación a la raíz fue {p} con un error {tipos_errores[tipo_error]} de {errores[tipo_error]}")
+    if len(tabla) == 1:
+        print(f"\n\u29BF La mejor aproximación a la raíz fue {p} pero no se puede determinar el error con una sola iteracion.")
+    elif tipo_error != 3 and tabla[-1][7 + tipo_error] >= tol:
+        print("\n\u29BF ¡EL MÉTODO FALLO HASTA LA ÚLTIMA ITERACIÓN!")
+        print(f"\u29BF La mejor aproximación a la raíz fue {tabla[-1][5]} con un error {tipos_errores[tipo_error]} de {tabla[-1][7 + tipo_error]}")
     else:
-        print(f"\nRaíz obtenida: {p}")
-        print(f"La raíz se obtuvo en la iteración {i} con un error {tipos_errores[tipo_error]} de {errores[tipo_error]}")
+        print(f"\n\u29BF Raíz obtenida: {tabla[-1][5]}")
+        print(f"\u29BF La raíz se obtuvo en la iteración {tabla[-1][0]} con un error {tipos_errores[tipo_error]} de {tabla[-1][7 + tipo_error]}")
 
 
 # Menu con los métodos
